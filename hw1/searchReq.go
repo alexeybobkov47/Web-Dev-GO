@@ -10,7 +10,7 @@ import (
 func main() {
 	searchReq := "yandex"
 	sites := []string{
-		"https://yandex.ru",
+		"345345345https://yandex.ru",
 		"https://golang.org",
 		"https://google.com",
 		"https://github.com",
@@ -18,39 +18,37 @@ func main() {
 		"https://geekbrains.ru",
 	}
 
-	var (
-		result = make([]string, 0, len(sites))
-	)
-	for _, site := range sites {
-		in := search(searchReq, site)
-		result = append(result, in)
-	}
-
-	log.Printf("%v", result)
+	var result = make([]string, 0, len(sites))
+	result = search(searchReq, sites)
+	log.Printf("Найдены совпадения: %q", result)
 
 }
 
-func search(searchReq string, site string) string {
-	res := getReq(site)
-	if strings.Contains(string(res), searchReq) {
-		return "\nНа сайте " + site + " есть совпадения по запросу " + searchReq
+func search(searchReq string, sites []string) []string {
+	out := make([]string, 0, 1)
+	for _, site := range sites {
+		res := getReq(site)
+		if strings.Contains(string(res), searchReq) {
+			out = append(out, site)
+
+		}
+
 	}
-	return "\nНа сайте " + site + " нет совпадений по запросу " + searchReq
+	return out
 }
 
 func getReq(reqURL string) []byte {
-	resp, _ := http.Get(reqURL)
-	body, _ := ioutil.ReadAll(resp.Body)
+	resp, err := http.Get(reqURL)
+	if err != nil {
+		log.Println("Ошибка в getReq http.Get " + reqURL)
+		return nil
+
+	}
 	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("Ошибка в getReq ioutil.ReadAll")
+		return nil
+	}
 	return body
 }
-
-// Вывод с консоли
-// $ go run searchReq.go
-// 2020/02/22 22:05:17 [
-// На сайте https://yandex.ru есть совпадения по запросу yandex
-// На сайте https://golang.org нет совпадений по запросу yandex
-// На сайте https://google.com нет совпадений по запросу yandex
-// На сайте https://github.com нет совпадений по запросу yandex
-// На сайте https://dtf.ru есть совпадения по запросу yandex
-// На сайте https://geekbrains.ru есть совпадения по запросу yandex]
