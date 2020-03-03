@@ -1,0 +1,29 @@
+{{define "blog"}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Name}}</title>
+    
+</head>
+<body>
+    <div class="header">
+        <h1>{{.Name}}</h1>
+        <h3>{{.Description}}</h3>
+    </div>
+    <div class="posts">
+        {{range .Posts}}
+        <div class="post" id="{{.ID}}">
+            <h5>{{.Header}}</h5>
+            <p>{{.Text}}</p>
+        </div>
+    </div>
+    {{end}}
+
+</body>
+
+</html>
+{{end}}
