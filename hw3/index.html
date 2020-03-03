@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Name}}</title>
     
 </head>
-<body>
+<body><div class="layout">
     <div class="header">
         <h1>{{.Name}}</h1>
         <h3>{{.Description}}</h3>
@@ -20,9 +20,10 @@
             <h5>{{.Header}}</h5>
             <p>{{.Text}}</p>
         </div>
+        {{end}}
     </div>
-    {{end}}
-
+    
+</div>
 </body>
 
 </html>
