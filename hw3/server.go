@@ -4,9 +4,8 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 )
-
-var tmpl = template.Must(template.New("BlogTemplate").ParseFiles("index.html"))
 
 var blog1 = Blog{
 	Name:        "Личный блог",
@@ -18,12 +17,18 @@ var blog1 = Blog{
 	},
 }
 
+var tmplBlog = template.Must(template.New("BlogTemplate").ParseFiles("index.html"))
+var tmplPost = template.Must(template.New("PostTemplate").ParseFiles("post.html"))
+
 func main() {
 	router := http.NewServeMux()
 	port := "8080"
+
 	router.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("src"))))
 	router.HandleFunc("/blog", showBlog)
-	router.HandleFunc("/blog/1", showBlog)
+	router.HandleFunc("/blog/1", showPost)
+	router.HandleFunc("/blog/2", showPost)
+	router.HandleFunc("/blog/3", showPost)
 
 	log.Printf("start listen on port %v", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
@@ -31,9 +36,22 @@ func main() {
 }
 
 func showBlog(w http.ResponseWriter, r *http.Request) {
-	path := r.URL.Path[1:]
-	log.Println(path)
-	if err := tmpl.ExecuteTemplate(w, "blog", blog1); err != nil {
+	if err := tmplBlog.ExecuteTemplate(w, "blog", blog1); err != nil {
 		log.Println(err)
+		return
+	}
+}
+
+func showPost(w http.ResponseWriter, r *http.Request) {
+	path, err := strconv.Atoi(r.URL.Path[6:])
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	log.Println(path)
+	if err := tmplPost.ExecuteTemplate(w, "post", blog1.Posts[path-1]); err != nil {
+		log.Println(err)
+		return
 	}
 }
