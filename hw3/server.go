@@ -28,7 +28,6 @@ func main() {
 	router.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("src"))))
 	router.HandleFunc("/blog", showBlog)
 	for _, value := range blog1.Posts {
-		log.Println(value.ID)
 		router.HandleFunc("/blog/"+value.ID, showPost)
 	}
 	router.HandleFunc("/blog/newpost", newPost)
