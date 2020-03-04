@@ -17,6 +17,7 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  text-align: center;
   width: 900px;
   background: #84c6da;
   margin: 15px;
@@ -34,8 +35,10 @@ body {
           justify-content: center;
 }
 
-.posts .post {
+.post {
   margin: 5px;
-  border: 1px black;
+  border: 2px solid #000000;
+  border-radius: 3px;
+  padding: 5px;
 }
 /*# sourceMappingURL=style.css.map */
