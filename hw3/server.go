@@ -19,6 +19,7 @@ var blog1 = Blog{
 
 var tmplBlog = template.Must(template.New("BlogTemplate").ParseFiles("index.html"))
 var tmplPost = template.Must(template.New("PostTemplate").ParseFiles("post.html"))
+var tmplNewPost = template.Must(template.New("PostTemplate").ParseFiles("newpost.html"))
 
 func main() {
 	router := http.NewServeMux()
@@ -29,6 +30,7 @@ func main() {
 	router.HandleFunc("/blog/1", showPost)
 	router.HandleFunc("/blog/2", showPost)
 	router.HandleFunc("/blog/3", showPost)
+	router.HandleFunc("/blog/newpost", newPost)
 
 	log.Printf("start listen on port %v", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
@@ -51,6 +53,22 @@ func showPost(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(path)
 	if err := tmplPost.ExecuteTemplate(w, "post", blog1.Posts[path-1]); err != nil {
+		log.Println(err)
+		return
+	}
+}
+
+func newPost(w http.ResponseWriter, r *http.Request) {
+
+	newpost := Post{
+		ID:     r.FormValue("ID"),
+		Header: r.FormValue("header"),
+		Text:   r.FormValue("text"),
+	}
+
+	log.Println(newpost)
+
+	if err := tmplNewPost.ExecuteTemplate(w, "newpost", blog1.Posts); err != nil {
 		log.Println(err)
 		return
 	}
