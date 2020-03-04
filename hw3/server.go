@@ -65,8 +65,11 @@ func newPost(w http.ResponseWriter, r *http.Request) {
 		Header: r.FormValue("header"),
 		Text:   r.FormValue("text"),
 	}
-
 	log.Println(newpost)
+
+	n := map[string]string{"ID": r.FormValue("ID"), "Header": r.FormValue("header"), "Text": r.FormValue("text")}
+	log.Println(n)
+	log.Println(blog1.Posts)
 
 	if err := tmplNewPost.ExecuteTemplate(w, "newpost", blog1.Posts); err != nil {
 		log.Println(err)
