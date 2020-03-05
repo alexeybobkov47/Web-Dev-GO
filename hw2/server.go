@@ -40,18 +40,17 @@ func getCookieHandle(wr http.ResponseWriter, req *http.Request) {
 }
 
 func searchHandle(wr http.ResponseWriter, req *http.Request) {
-
-	// var sReq = []byte(`{
-	// 	"searchReq": "yandex",
-	// 	"sites": [
-	// 		"345345345https://yandex.ru",
-	// 		"https://golang.org",
-	// 		"https://google.com",
-	// 		"https://github.com",
-	// 		"https://dtf.ru",
-	// 		"https://geekbrains.ru"
-	// 	]
-	// }`)
+	var sReq = []byte(`{
+		"searchReq": "yandex",
+		"sites": [
+			"345345345https://yandex.ru",
+			"https://golang.org",
+			"https://google.com",
+			"https://github.com",
+			"https://dtf.ru",
+			"https://geekbrains.ru"
+		]
+	}`)
 
 	type searchRequest struct {
 		SearchReq string   `json:"searchReq"`
@@ -61,6 +60,7 @@ func searchHandle(wr http.ResponseWriter, req *http.Request) {
 	sR := searchRequest{}
 	if err := json.Unmarshal(sReq, &sR); err != nil {
 		log.Println(err)
+		return
 	}
 
 	result := searchRequest{
@@ -70,6 +70,7 @@ func searchHandle(wr http.ResponseWriter, req *http.Request) {
 	resultJSON, err := json.Marshal(result)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	fmt.Printf("%s", resultJSON)
