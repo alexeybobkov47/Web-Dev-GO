@@ -9,7 +9,7 @@ type Blog struct {
 
 //Post - Структура постов в блоге
 type Post struct {
-	ID     string
+	ID     int
 	Header string
 	Text   string
 }
