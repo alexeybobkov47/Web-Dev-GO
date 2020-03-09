@@ -49,5 +49,14 @@ func newPost(database *sql.DB, newpost Post) {
 	post := fmt.Sprintf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
 	// database.QueryRow("insert into Site.Post (header, text) values (" + newpost.Header + "," + newpost.Text + ")")
 	database.Exec(post)
-
 }
+
+func editPost(database *sql.DB, editPost Post, id string) {
+	post := fmt.Sprintf("update Site.Post set header='%s', text='%s' where id=%s", editPost.Header, editPost.Text, id)
+	database.Exec(post)
+}
+
+// func deletePosts(database *sql.DB, id string) (Post, error) {
+// 	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
+// 	database.Exec(post)
+// }
