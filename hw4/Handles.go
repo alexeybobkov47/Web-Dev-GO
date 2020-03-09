@@ -33,21 +33,18 @@ func (database *Server) showPost(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-// func (database *sql.DB) newPost(w http.ResponseWriter, r *http.Request) {
-// 	lenBlog := len(blog1.Posts)
-// 	newpost := Post{
-// 		ID:     lenBlog + 1,
-// 		Header: r.FormValue("header"),
-// 		Text:   r.FormValue("text"),
-// 	}
+func (database *Server) newPost(w http.ResponseWriter, r *http.Request) {
+	newpost := Post{
+		Header: r.FormValue("header"),
+		Text:   r.FormValue("text"),
+	}
 
-// 	if len(newpost.Header) != 0 {
-// 		blog1.Posts = append(blog1.Posts, newpost)
-// 	}
+	if len(newpost.Header) != 0 && len(newpost.Text) != 0 {
+		newPost(database.db, newpost)
+	}
 
-// 	if err := tmplNewPost.ExecuteTemplate(w, "newpost", blog1.Posts); err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// }
+	if err := tmplNewPost.ExecuteTemplate(w, "newpost", newpost); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	return
+}

@@ -36,11 +36,16 @@ func getBlogs(database *sql.DB) (Blog, error) {
 
 func getPosts(database *sql.DB, id string) (Post, error) {
 	posts := Post{}
-	log.Println("select * from Site.Post WHERE Site.Post.id =" + id)
-	row := database.QueryRow("select * from Site.Post WHERE Site.Post.id =" + id)
+	row := database.QueryRow(`select * from Site.Post WHERE Site.Post.id =` + id)
 	err := row.Scan(&posts.ID, &posts.Header, &posts.Text)
 	if err != nil {
 		log.Println(err)
 	}
 	return posts, err
+}
+
+func newPost(database *sql.DB, newpost Post) {
+	log.Printf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
+	database.QueryRow("insert into Site.Post (header, text) values (" + newpost.Header + "," + newpost.Text + ")")
+
 }
