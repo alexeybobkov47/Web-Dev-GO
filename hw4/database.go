@@ -56,7 +56,7 @@ func editPost(database *sql.DB, editPost Post, id string) {
 	database.Exec(post)
 }
 
-// func deletePosts(database *sql.DB, id string) (Post, error) {
-// 	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
-// 	database.Exec(post)
-// }
+func deletePosts(database *sql.DB, id string) {
+	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
+	database.Exec(deletepost)
+}
