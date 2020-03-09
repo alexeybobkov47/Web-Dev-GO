@@ -28,9 +28,8 @@ func main() {
 	}
 
 	router := http.NewServeMux()
-	router.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("src"))))
 	router.HandleFunc("/blog", s.showBlog)
-	router.HandleFunc("/blog/newpost", s.newPost)
+	// router.HandleFunc("/blog/newpost", s.newPost)
 	router.HandleFunc("/blog/", s.showPost)
 	port := "8080"
 	log.Printf("start listen on port %v", port)

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -20,7 +21,8 @@ func (database *Server) showBlog(w http.ResponseWriter, r *http.Request) {
 
 func (database *Server) showPost(w http.ResponseWriter, r *http.Request) {
 	path := strings.Split(r.URL.Path, "/")
-	posts, err := getPosts(database.db, path[2])
+	p := strconv.Itoa(len(path) - 1)
+	posts, err := getPosts(database.db, p)
 	if err != nil {
 		log.Println(err)
 	}

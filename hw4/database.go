@@ -36,7 +36,7 @@ func getBlogs(database *sql.DB) (Blog, error) {
 
 func getPosts(database *sql.DB, id string) (Post, error) {
 	posts := Post{}
-	log.Println("select * from Site.Post WHERE Post.id = ", id)
+	log.Println("select * from Site.Post WHERE Site.Post.id =" + id)
 	row := database.QueryRow("select * from Site.Post WHERE Site.Post.id =" + id)
 	err := row.Scan(&posts.ID, &posts.Header, &posts.Text)
 	if err != nil {
