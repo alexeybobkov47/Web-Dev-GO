@@ -15,7 +15,7 @@ func (database *Server) showBlog(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := tmplBlog.ExecuteTemplate(w, "blog", blogs); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println(err)
 
 	}
 
@@ -25,12 +25,12 @@ func (database *Server) showPost(w http.ResponseWriter, r *http.Request) {
 	path := strings.Split(r.URL.Path, "/")
 	p, err := strconv.Atoi(path[2])
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println(err)
 		return
 	}
 	posts, err := getPosts(database.db, (p - 1))
 	if err := tmplPost.ExecuteTemplate(w, "post", posts); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println(err)
 
 	}
 

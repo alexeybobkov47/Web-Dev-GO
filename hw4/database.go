@@ -6,39 +6,37 @@ import (
 	"log"
 )
 
-func getBlogs(database *sql.DB) ([]Blog, error) {
-	res := []Blog{}
-
-	rows, err := database.Query("select * from Blog.Blogs")
+func getBlogs(database *sql.DB) (Blog, error) {
+	blogs := Blog{}
+	row := database.QueryRow("select * from Site.Blogs")
+	err := row.Scan(&blogs.ID, &blogs.Name, &blogs.Description)
 	if err != nil {
 		log.Println(err)
-		return res, err
+
 	}
+
+	rows, err := database.Query(fmt.Sprintf("select * from Site.Post"))
+	if err != nil {
+		log.Println(err)
+	}
+
 	defer rows.Close()
 	for rows.Next() {
-		blogs := Blog{}
+		posts := Post{}
 
-		err := rows.Scan(&blogs.ID, &blogs.Name, &blogs.Description)
+		err := rows.Scan(&posts.ID, &posts.Header, &posts.Text)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-
-		res = append(res, blogs)
+		blogs.Posts = append(blogs.Posts, posts)
 	}
 
-	return res, nil
+	return blogs, err
 }
 
 func getPosts(database *sql.DB, id int) (Blog, error) {
 	blogs := Blog{}
-
-	row := database.QueryRow(fmt.Sprintf("select * from Blog.Blogs where Blogs.id = %v", id))
-	err := row.Scan(&blogs.ID, &blogs.Name, &blogs.Description)
-	if err != nil {
-		log.Println(err)
-		return blogs, err
-	}
 
 	rows, err := database.Query(fmt.Sprintf("select * from Blog.Posts WHERE Post.blog_id = %v", id))
 	if err != nil {
