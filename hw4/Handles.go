@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -11,29 +10,25 @@ func (database *Server) showBlog(w http.ResponseWriter, r *http.Request) {
 	blogs, err := getBlogs(database.db)
 	if err != nil {
 		log.Println(err)
-		return
 	}
 
 	if err := tmplBlog.ExecuteTemplate(w, "blog", blogs); err != nil {
 		log.Println(err)
-
 	}
-
+	return
 }
 
 func (database *Server) showPost(w http.ResponseWriter, r *http.Request) {
 	path := strings.Split(r.URL.Path, "/")
-	p, err := strconv.Atoi(path[2])
+	posts, err := getPosts(database.db, path[2])
 	if err != nil {
 		log.Println(err)
-		return
 	}
-	posts, err := getPosts(database.db, (p - 1))
 	if err := tmplPost.ExecuteTemplate(w, "post", posts); err != nil {
 		log.Println(err)
 
 	}
-
+	return
 }
 
 // func (database *sql.DB) newPost(w http.ResponseWriter, r *http.Request) {
