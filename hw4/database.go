@@ -45,7 +45,9 @@ func getPosts(database *sql.DB, id string) (Post, error) {
 }
 
 func newPost(database *sql.DB, newpost Post) {
-	log.Printf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
-	database.QueryRow("insert into Site.Post (header, text) values (" + newpost.Header + "," + newpost.Text + ")")
+	// log.Printf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
+	post := fmt.Sprintf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
+	// database.QueryRow("insert into Site.Post (header, text) values (" + newpost.Header + "," + newpost.Text + ")")
+	database.Exec(post)
 
 }
