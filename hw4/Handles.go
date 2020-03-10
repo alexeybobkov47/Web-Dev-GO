@@ -10,12 +10,13 @@ func (database *Server) showBlog(w http.ResponseWriter, r *http.Request) {
 	blogs, err := getBlogs(database.db)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	if err := tmplBlog.ExecuteTemplate(w, "blog", blogs); err != nil {
 		log.Println(err)
+		return
 	}
-	return
 }
 
 func (database *Server) showPost(w http.ResponseWriter, r *http.Request) {
@@ -23,12 +24,12 @@ func (database *Server) showPost(w http.ResponseWriter, r *http.Request) {
 	posts, err := getPosts(database.db, (path[len(path)-1]))
 	if err != nil {
 		log.Println(err)
+		return
 	}
 	if err := tmplPost.ExecuteTemplate(w, "post", posts); err != nil {
 		log.Println(err)
-
+		return
 	}
-	return
 }
 
 func (database *Server) newPost(w http.ResponseWriter, r *http.Request) {
@@ -38,13 +39,17 @@ func (database *Server) newPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(newpost.Header) != 0 && len(newpost.Text) != 0 {
-		newPost(database.db, newpost)
+		err := newPost(database.db, newpost)
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 
 	if err := tmplNewPost.ExecuteTemplate(w, "newpost", newpost); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
-	return
 }
 
 func (database *Server) editPost(w http.ResponseWriter, r *http.Request) {
@@ -53,6 +58,7 @@ func (database *Server) editPost(w http.ResponseWriter, r *http.Request) {
 	posts, err := getPosts(database.db, p)
 	if err != nil {
 		log.Println(err)
+		return
 	}
 
 	editpost := Post{
@@ -60,12 +66,15 @@ func (database *Server) editPost(w http.ResponseWriter, r *http.Request) {
 		Text:   r.FormValue("text"),
 	}
 	if len(editpost.Header) != 0 && len(editpost.Text) != 0 {
-		editPost(database.db, editpost, p)
+		err := editPost(database.db, editpost, p)
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 
 	if err := tmplEditPost.ExecuteTemplate(w, "editpost", posts); err != nil {
 		log.Println(err)
-
+		return
 	}
-	return
 }
