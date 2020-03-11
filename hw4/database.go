@@ -58,7 +58,7 @@ func editPost(database *sql.DB, editPost Post, id string) error {
 	return err
 }
 
-func deletePosts(database *sql.DB, id string) error {
+func deletePost(database *sql.DB, id string) error {
 	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
 	_, err := database.Exec(deletepost)
 	return err

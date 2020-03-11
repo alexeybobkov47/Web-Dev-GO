@@ -21,7 +21,7 @@ CREATE TABLE Post (
 insert into Blogs
   (name, description)
 values
-  ("Личный блог ", "Описание блога");
+  ("My Blog", "description");
 insert into Post
   (header, text)
 values
@@ -31,4 +31,6 @@ values
   ("4 post", "4 text"),
   ("5 post", "5 text");
   -- sudo chmod 666 /var/run/docker.sock
-  
+  -- sudo docker run --name go -e MYSQL_ROOT_PASSWORD=12345 -p 3306:3306 -d mysql
+  -- sudo docker exec -it go bash
+  -- mysql -u root -p

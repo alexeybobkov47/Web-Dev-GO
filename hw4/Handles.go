@@ -12,7 +12,6 @@ func (database *Server) showBlog(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-
 	if err := tmplBlog.ExecuteTemplate(w, "blog", blogs); err != nil {
 		log.Println(err)
 		return
@@ -59,6 +58,14 @@ func (database *Server) editPost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 		return
+	}
+	delPost := r.URL.Query()
+	if delPost["delete"] != nil {
+		err := deletePost(database.db, strings.Join(delPost["id"], ""))
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 
 	editpost := Post{

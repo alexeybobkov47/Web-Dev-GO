@@ -14,7 +14,8 @@ var (
 	tmplPost     = template.Must(template.New("PostTemplate").ParseFiles("post.html"))
 	tmplNewPost  = template.Must(template.New("PostTemplate").ParseFiles("newpost.html"))
 	tmplEditPost = template.Must(template.New("PostTemplate").ParseFiles("editpost.html"))
-	dsn          = "root:12345@tcp(192.168.0.39:3306)/Site?charset=utf8"
+	// dsn          = "root:12345@tcp(192.168.0.39:3306)/Site?charset=utf8"
+	dsn = "root:12345@tcp(10.111.100.232:3306)/Site?charset=utf8"
 )
 
 func main() {
