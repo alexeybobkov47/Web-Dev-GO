@@ -21,7 +21,7 @@
           <h5>{{.Header}}</h5>
         </a>
         <p>{{.Text}}</p>
-        <a href="post/edit/{{.ID}}">Редактировать</a>
+        <a href="edit/{{.ID}}">Редактировать</a>
       </div>
       {{end}}
     </div>
@@ -29,7 +29,7 @@
   </div>
   <a href="newpost">Новый пост</a>
 
-  <script src="/static/js/reload.min.js"></script>
+  <script src="../static/js/reload.min.js"></script>
 </body>
 
 </html>

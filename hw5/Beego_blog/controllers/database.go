@@ -53,11 +53,11 @@ func getPost(database *sql.DB, id string) (models.Post, error) {
 
 // }
 
-// func editPost(database *sql.DB, editPost models.Post, id string) error {
-// 	post := fmt.Sprintf("update Site.Post set header='%s', text='%s' where id=%s", editPost.Header, editPost.Text, id)
-// 	_, err := database.Exec(post)
-// 	return err
-// }
+func editPost(database *sql.DB, editPost models.Post, id string) error {
+	post := fmt.Sprintf("update Site.Post set header='%s', text='%s' where id=%s", editPost.Header, editPost.Text, id)
+	_, err := database.Exec(post)
+	return err
+}
 
 // // DeletePost - удаление поста
 // func deletePost(database *sql.DB, id string) error {

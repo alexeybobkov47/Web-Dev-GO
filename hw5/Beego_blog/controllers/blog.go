@@ -44,38 +44,3 @@ func (c *BlogController) Get() {
 // 		return
 // 	}
 // }
-
-// func (database *Server) editPost(w http.ResponseWriter, r *http.Request) {
-// 	path := strings.Split(r.URL.Path, "/")
-// 	p := (path[len(path)-1])
-// 	posts, err := getPosts(database.db, p)
-// 	if err != nil {
-// 		log.Println(err)
-// 		return
-// 	}
-// 	delPost := r.URL.Query()
-// 	if delPost["delete"] != nil {
-// 		err := deletePost(database.db, strings.Join(delPost["id"], ""))
-// 		if err != nil {
-// 			log.Println(err)
-// 			return
-// 		}
-// 	}
-
-// 	editpost := Post{
-// 		Header: r.FormValue("header"),
-// 		Text:   r.FormValue("text"),
-// 	}
-// 	if len(editpost.Header) != 0 && len(editpost.Text) != 0 {
-// 		err := editPost(database.db, editpost, p)
-// 		if err != nil {
-// 			log.Println(err)
-// 			return
-// 		}
-// 	}
-
-// 	if err := tmplEditPost.ExecuteTemplate(w, "editpost", posts); err != nil {
-// 		log.Println(err)
-// 		return
-// 	}
-// }

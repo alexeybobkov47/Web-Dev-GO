@@ -28,5 +28,9 @@ func init() {
 		Controller: beego.Controller{},
 		DB:         db,
 	})
-	// beego.Router("/editpost", &controllers.MainController{})
+	beego.Router("/edit/:id([0-9])+", &controllers.EditController{
+		Controller: beego.Controller{},
+		DB:         db,
+	})
+
 }
