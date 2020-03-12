@@ -1,18 +1,20 @@
 package controllers
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/astaxie/beego"
 )
 
-type MainController struct {
+type blogController struct {
 	beego.Controller
+	db *sql.DB
 }
 
-func (c *MainController) Get() {
+func (c *blogController) Get() {
 
-	blogs, err := getBlogs(database.db)
+	blogs, err := getBlogs(c.db)
 	if err != nil {
 		log.Println(err)
 		return

@@ -1,7 +1,6 @@
 package routers
 
 import (
-	"Beego_blog/controllers"
 	"database/sql"
 	"log"
 
@@ -15,9 +14,13 @@ func init() {
 	if err != nil {
 		log.Println(err)
 	}
+	log.Println(db)
 	defer db.Close()
 
-	beego.Router("/blog", &controllers.MainController{})
-	beego.Router("/post/", &controllers.MainController{})
-	beego.Router("/editpost", &controllers.MainController{})
+	beego.Router("/blog", &controllers.blogController{
+		Controller: beego.Controller{},
+		Db:         db,
+	})
+	// beego.Router("/post/", &controllers.MainController{})
+	// beego.Router("/editpost", &controllers.MainController{})
 }
