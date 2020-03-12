@@ -1,10 +1,12 @@
 package routers
 
 import (
+	"Web-Dev-GO/git/hw5/Beego_blog/controllers"
 	"database/sql"
 	"log"
 
 	"github.com/astaxie/beego"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const dsn = "root:12345@tcp(10.111.100.232:3306)/Site?charset=utf8"
@@ -14,13 +16,17 @@ func init() {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println(db)
-	defer db.Close()
+	if err := db.Ping(); err != nil {
+		log.Fatal(err)
+	}
 
-	beego.Router("/blog", &controllers.blogController{
+	beego.Router("/blog", &controllers.BlogController{
 		Controller: beego.Controller{},
-		Db:         db,
+		DB:         db,
 	})
-	// beego.Router("/post/", &controllers.MainController{})
+	beego.Router("/post/", &controllers.PostController{
+		Controller: beego.Controller{},
+		DB:         db,
+	})
 	// beego.Router("/editpost", &controllers.MainController{})
 }
