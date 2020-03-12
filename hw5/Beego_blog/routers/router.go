@@ -9,7 +9,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const dsn = "root:12345@tcp(10.111.100.232:3306)/Site?charset=utf8"
+// const dsn = "root:12345@tcp(10.111.100.232:3306)/Site?charset=utf8"
+const dsn = "root:12345@tcp(192.168.0.39:3306)/Site?charset=utf8"
 
 func init() {
 	db, err := sql.Open("mysql", dsn)
@@ -29,6 +30,10 @@ func init() {
 		DB:         db,
 	})
 	beego.Router("/edit/:id([0-9])+", &controllers.EditController{
+		Controller: beego.Controller{},
+		DB:         db,
+	})
+	beego.Router("/new", &controllers.NewPostController{
 		Controller: beego.Controller{},
 		DB:         db,
 	})

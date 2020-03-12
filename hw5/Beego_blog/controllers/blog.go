@@ -24,23 +24,3 @@ func (c *BlogController) Get() {
 	c.Data["Post"] = blogs.Posts
 	c.TplName = "index.tpl"
 }
-
-// func (database *Server) newPost(w http.ResponseWriter, r *http.Request) {
-// 	newpost := Post{
-// 		Header: r.FormValue("header"),
-// 		Text:   r.FormValue("text"),
-// 	}
-
-// 	if len(newpost.Header) != 0 && len(newpost.Text) != 0 {
-// 		err := newPost(database.db, newpost)
-// 		if err != nil {
-// 			log.Println(err)
-// 			return
-// 		}
-// 	}
-
-// 	if err := tmplNewPost.ExecuteTemplate(w, "newpost", newpost); err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-// }

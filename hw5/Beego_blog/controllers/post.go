@@ -20,6 +20,7 @@ func (c *PostController) Get() {
 	post, err := getPost(c.DB, (path[len(path)-1]))
 	if err != nil {
 		log.Println(err)
+		c.Ctx.ResponseWriter.WriteHeader(404)
 		return
 	}
 	c.Data["Post"] = post

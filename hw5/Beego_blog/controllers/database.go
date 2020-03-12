@@ -44,14 +44,12 @@ func getPost(database *sql.DB, id string) (models.Post, error) {
 	return post, nil
 }
 
-// func newPost(database *sql.DB, newpost models.Post) error {
-// 	// log.Printf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
-// 	post := fmt.Sprintf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
-// 	// database.QueryRow("insert into Site.Post (header, text) values (" + newpost.Header + "," + newpost.Text + ")")
-// 	_, err := database.Exec(post)
-// 	return err
+func newPost(database *sql.DB, newpost models.Post) error {
+	post := fmt.Sprintf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
+	_, err := database.Exec(post)
+	return err
 
-// }
+}
 
 func editPost(database *sql.DB, editPost models.Post, id string) error {
 	post := fmt.Sprintf("update Site.Post set header='%s', text='%s' where id=%s", editPost.Header, editPost.Text, id)

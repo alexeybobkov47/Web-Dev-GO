@@ -27,7 +27,7 @@
     </div>
 
   </div>
-  <a href="newpost">Новый пост</a>
+  <a href="new">Новый пост</a>
 
   <script src="../static/js/reload.min.js"></script>
 </body>
