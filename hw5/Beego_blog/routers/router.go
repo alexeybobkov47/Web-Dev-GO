@@ -24,7 +24,7 @@ func init() {
 		Controller: beego.Controller{},
 		DB:         db,
 	})
-	beego.Router("/post/", &controllers.PostController{
+	beego.Router("/post/:id([0-9])+", &controllers.PostController{
 		Controller: beego.Controller{},
 		DB:         db,
 	})

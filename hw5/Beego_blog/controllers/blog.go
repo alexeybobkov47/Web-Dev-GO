@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"log"
-	"strings"
 
 	"github.com/astaxie/beego"
 )
@@ -24,24 +23,6 @@ func (c *BlogController) Get() {
 	c.Data["Blog"] = blogs
 	c.Data["Post"] = blogs.Posts
 	c.TplName = "index.tpl"
-}
-
-// PostController -
-type PostController struct {
-	beego.Controller
-	DB *sql.DB
-}
-
-func (c *PostController) showPost() {
-	path := strings.Split(c.Ctx.Request.URL.Path, "/")
-	post, err := getPost(c.DB, (path[len(path)-1]))
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	c.Data["Post"] = post
-	c.TplName = "post.tpl"
-
 }
 
 // func (database *Server) newPost(w http.ResponseWriter, r *http.Request) {

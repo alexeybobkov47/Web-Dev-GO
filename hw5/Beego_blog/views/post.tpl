@@ -9,8 +9,8 @@
 
 <body>
     <div class="post" id="{{.ID}}">
-        <h5>{{.Header}}</h5>
-        <p>{{.Text}}</p>
+        <h5>{{.Post.Header}}</h5>
+        <p>{{.Post.Text}}</p>
     </div>
     <a href="/blog">На главную</a>
 </body>
