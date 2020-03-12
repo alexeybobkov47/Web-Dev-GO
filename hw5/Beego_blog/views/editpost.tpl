@@ -20,7 +20,7 @@
         </div>
         <input type="submit" value="submit">
     </form>
-    <form method="GET">
+    <form method="POST" name="delete">
         <input type="hidden" name="id" value="{{.Post.ID}}">
         <input type="submit" name="delete" value="Удалить">
     </form>

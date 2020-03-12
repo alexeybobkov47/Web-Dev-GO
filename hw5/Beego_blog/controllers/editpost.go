@@ -24,15 +24,6 @@ func (c *EditController) Get() {
 		log.Println(err)
 		return
 	}
-	// delPost := c.Ctx.Request.URL.Query()
-	// if delPost["delete"] != nil {
-	// 	err := deletePost(c.DB, strings.Join(delPost["id"], ""))
-	// 	if err != nil {
-	// 		log.Println(err)
-	// 		return
-	// 	}
-	// }
-
 	editpost := models.Post{
 		Header: c.Ctx.Request.FormValue("header"),
 		Text:   c.Ctx.Request.FormValue("text"),
@@ -48,3 +39,25 @@ func (c *EditController) Get() {
 	c.Data["Post"] = posts
 	c.TplName = "editpost.tpl"
 }
+
+// Post -
+func (c *EditController) Post() {
+	path := strings.Split(c.Ctx.Request.URL.Path, "/")
+	err := deletePost(c.DB, (path[len(path)-1]))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	c.Redirect("/blog", 301)
+}
+
+// Delete -
+// func (c *EditController) Delete() {
+// 	id := strings.Join((c.Ctx.Request.URL.Query())["id"], "")
+// 	err := deletePost(c.DB, id)
+// 	if err != nil {
+// 		log.Println(err)
+// 		return
+// 	}
+// 	c.Redirect("/Blog", 301)
+// }

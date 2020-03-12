@@ -59,9 +59,9 @@ func editPost(database *sql.DB, editPost models.Post, id string) error {
 	return err
 }
 
-// // DeletePost - удаление поста
-// func deletePost(database *sql.DB, id string) error {
-// 	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
-// 	_, err := database.Exec(deletepost)
-// 	return err
-// }
+// DeletePost - удаление поста
+func deletePost(database *sql.DB, id string) error {
+	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
+	_, err := database.Exec(deletepost)
+	return err
+}
