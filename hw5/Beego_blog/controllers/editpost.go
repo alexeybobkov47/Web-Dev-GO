@@ -3,8 +3,6 @@ package controllers
 import (
 	"Web-Dev-GO/git/hw5/Beego_blog/models"
 	"database/sql"
-	"log"
-	"strings"
 
 	"github.com/astaxie/beego"
 )
@@ -17,11 +15,11 @@ type EditController struct {
 
 // Get -
 func (c *EditController) Get() {
-	path := strings.Split(c.Ctx.Request.URL.Path, "/")
-	p := (path[len(path)-1])
+	p := c.Ctx.Input.Param(":id")
 	posts, err := getPost(c.DB, p)
 	if err != nil {
-		log.Println(err)
+		c.Ctx.ResponseWriter.WriteHeader(500)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 		return
 	}
 	editpost := models.Post{
@@ -31,7 +29,8 @@ func (c *EditController) Get() {
 	if len(editpost.Header) != 0 && len(editpost.Text) != 0 {
 		err := editPost(c.DB, editpost, p)
 		if err != nil {
-			log.Println(err)
+			c.Ctx.ResponseWriter.WriteHeader(500)
+			_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 			return
 		}
 	}
@@ -42,22 +41,12 @@ func (c *EditController) Get() {
 
 // Post -
 func (c *EditController) Post() {
-	path := strings.Split(c.Ctx.Request.URL.Path, "/")
-	err := deletePost(c.DB, (path[len(path)-1]))
+
+	err := deletePost(c.DB, c.Ctx.Input.Param(":id"))
 	if err != nil {
-		log.Println(err)
+		c.Ctx.ResponseWriter.WriteHeader(500)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 		return
 	}
 	c.Redirect("/blog", 301)
 }
-
-// Delete -
-// func (c *EditController) Delete() {
-// 	id := strings.Join((c.Ctx.Request.URL.Query())["id"], "")
-// 	err := deletePost(c.DB, id)
-// 	if err != nil {
-// 		log.Println(err)
-// 		return
-// 	}
-// 	c.Redirect("/Blog", 301)
-// }

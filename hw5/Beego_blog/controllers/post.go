@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"log"
-	"strings"
 
 	"github.com/astaxie/beego"
 )
@@ -16,11 +15,11 @@ type PostController struct {
 
 // Get -
 func (c *PostController) Get() {
-	path := strings.Split(c.Ctx.Request.URL.Path, "/")
-	post, err := getPost(c.DB, (path[len(path)-1]))
+	post, err := getPost(c.DB, c.Ctx.Input.Param(":id"))
 	if err != nil {
 		log.Println(err)
 		c.Ctx.ResponseWriter.WriteHeader(404)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 		return
 	}
 	c.Data["Post"] = post

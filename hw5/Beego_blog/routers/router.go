@@ -15,7 +15,7 @@ const dsn = "root:12345@tcp(192.168.0.39:3306)/Site?charset=utf8"
 func init() {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	if err := db.Ping(); err != nil {
 		log.Fatal(err)
@@ -25,11 +25,11 @@ func init() {
 		Controller: beego.Controller{},
 		DB:         db,
 	})
-	beego.Router("/post/:id([0-9])+", &controllers.PostController{
+	beego.Router("/post/:id", &controllers.PostController{
 		Controller: beego.Controller{},
 		DB:         db,
 	})
-	beego.Router("/edit/:id([0-9])+", &controllers.EditController{
+	beego.Router("/edit/:id", &controllers.EditController{
 		Controller: beego.Controller{},
 		DB:         db,
 	})

@@ -3,7 +3,6 @@ package controllers
 import (
 	"Web-Dev-GO/git/hw5/Beego_blog/models"
 	"database/sql"
-	"log"
 
 	"github.com/astaxie/beego"
 )
@@ -28,7 +27,8 @@ func (c *NewPostController) Post() {
 	if len(newpost.Header) != 0 && len(newpost.Text) != 0 {
 		err := newPost(c.DB, newpost)
 		if err != nil {
-			log.Println(err)
+			c.Ctx.ResponseWriter.WriteHeader(500)
+			_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 			return
 		}
 	}

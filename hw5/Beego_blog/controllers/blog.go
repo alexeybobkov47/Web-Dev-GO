@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"database/sql"
-	"log"
 
 	"github.com/astaxie/beego"
 )
@@ -17,7 +16,8 @@ type BlogController struct {
 func (c *BlogController) Get() {
 	blogs, err := getBlogs(c.DB)
 	if err != nil {
-		log.Println(err)
+		c.Ctx.ResponseWriter.WriteHeader(500)
+		_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 		return
 	}
 	c.Data["Blog"] = blogs

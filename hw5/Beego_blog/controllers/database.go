@@ -12,7 +12,7 @@ func getBlogs(database *sql.DB) (models.Blog, error) {
 	row := database.QueryRow("select * from Site.Blogs")
 	err := row.Scan(&blogs.ID, &blogs.Name, &blogs.Description)
 	if err != nil {
-		return blogs, err
+		return models.Blog{}, err
 	}
 
 	rows, err := database.Query(fmt.Sprintf("select * from Site.Post"))
@@ -39,27 +39,24 @@ func getPost(database *sql.DB, id string) (models.Post, error) {
 	row := database.QueryRow(`select * from Site.Post WHERE Site.Post.id =` + id)
 	err := row.Scan(&post.ID, &post.Header, &post.Text)
 	if err != nil {
-		return post, err
+		return models.Post{}, err
 	}
 	return post, nil
 }
 
 func newPost(database *sql.DB, newpost models.Post) error {
-	post := fmt.Sprintf("insert into Site.Post (header, text) values ('%s','%s');", newpost.Header, newpost.Text)
-	_, err := database.Exec(post)
+	_, err := database.Exec(`insert into Site.Post (header, text) values (?,?);`, newpost.Header, newpost.Text)
 	return err
 
 }
 
 func editPost(database *sql.DB, editPost models.Post, id string) error {
-	post := fmt.Sprintf("update Site.Post set header='%s', text='%s' where id=%s", editPost.Header, editPost.Text, id)
-	_, err := database.Exec(post)
+	_, err := database.Exec(`update Site.Post set header=?, text=? where id=?;`, editPost.Header, editPost.Text, id)
 	return err
 }
 
 // DeletePost - удаление поста
 func deletePost(database *sql.DB, id string) error {
-	deletepost := fmt.Sprintf(`delete from Site.Post WHERE Site.Post.id =` + id)
-	_, err := database.Exec(deletepost)
+	_, err := database.Exec(`delete from Site.Post WHERE Site.Post.id =?;`, id)
 	return err
 }
