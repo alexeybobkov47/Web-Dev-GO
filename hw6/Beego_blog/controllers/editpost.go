@@ -28,12 +28,12 @@ func (c *EditController) Get() {
 	}
 	if len(editpost.Header) != 0 && len(editpost.Text) != 0 {
 		err := editPost(c.DB, editpost, p)
-		c.Redirect("/blog", 301)
 		if err != nil {
 			c.Ctx.ResponseWriter.WriteHeader(500)
 			_, _ = c.Ctx.ResponseWriter.Write([]byte(err.Error()))
 			return
 		}
+		c.Redirect("/blog", 301)
 	}
 	c.Data["Post"] = posts
 	c.TplName = "editpost.tpl"

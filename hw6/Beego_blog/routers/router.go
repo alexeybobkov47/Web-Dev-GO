@@ -11,7 +11,8 @@ import (
 )
 
 func init() {
-	db, err := mongo.NewClient(options.Client().ApplyURI("mongodb://192.168.0.39:27017"))
+	// db, err := mongo.NewClient(options.Client().ApplyURI("mongodb://192.168.0.39:27017"))
+	db, err := mongo.NewClient(options.Client().ApplyURI("mongodb://10.111.100.232:27017"))
 	if err != nil {
 		log.Fatal(err)
 	}

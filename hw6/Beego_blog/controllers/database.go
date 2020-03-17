@@ -9,44 +9,38 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// > db.blog.insert({"name": "Личный блог", "description": "Описание", posts: [{"header": "1111", "text": "11111"}, {"header": "2222", "text": "22222"}]})
 func getBlogs(database *mongo.Client) (models.Blog, error) {
 	c := database.Database("myblog").Collection("blog")
 	data, err := c.Find(context.Background(), bson.D{})
 	if err != nil {
 		return models.Blog{}, err
 	}
-	blogs := []models.Blog{}
+	blogs := make([]models.Blog, 0, 1)
 	if err := data.All(context.Background(), &blogs); err != nil {
 		return models.Blog{}, err
 	}
-	blog := blogs[0]
-	p := database.Database("myblog").Collection("posts")
-	rows, err := p.Find(context.Background(), bson.D{})
-	if err != nil {
-		return models.Blog{}, err
-	}
-	if err := rows.All(context.Background(), &blog.Posts); err != nil {
-		return models.Blog{}, err
-	}
-
-	return blog, nil
+	return blogs[0], nil
 }
 
 func getPost(database *mongo.Client, id string) (models.Post, error) {
-	log.Println(id)
-	p := database.Database("myblog").Collection("posts")
-	filter := bson.D{{Key: "header", Value: id}}
+	p := database.Database("myblog").Collection("blog")
+	// filter := bson.M{"posts": bson.M{"$elemMatch": bson.M{"header": "1111"}}}
+	filter := bson.D{{Key: "posts.header", Value: id}}
+	// rows := p.FindOne(context.Background(), filter)
 	rows := p.FindOne(context.Background(), filter)
-	post := new(models.Post)
-	if err := rows.Decode(post); err != nil {
+	// blog := new(models.Blog)
+	post := models.Post{}
+	if err := rows.Decode(&post); err != nil {
 		return models.Post{}, err
 	}
-	return *post, nil
+	log.Println(post)
+	return post, nil
 }
 
 func newPost(database *mongo.Client, newpost models.Post) error {
-	c := database.Database("myblog").Collection("posts")
-	_, err := c.InsertOne(context.Background(), newpost)
+	c := database.Database("myblog").Collection("blog")
+	_, err := c.InsertOne(context.Background(), bson.D{{"posts": bson.D{"header": newpost.Header, "text": newpost.Text}}})
 	return err
 
 }
