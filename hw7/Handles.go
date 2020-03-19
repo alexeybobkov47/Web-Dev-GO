@@ -66,6 +66,7 @@ func (database *Server) editPost(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
+
 	}
 
 	editpost := Post{

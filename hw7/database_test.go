@@ -6,7 +6,26 @@ import (
 	"testing"
 )
 
-func getDbCon() (s Server) {
+func TestNewPost(t *testing.T) {
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		log.Println(err)
+	}
+	defer db.Close()
+
+	s := Server{
+		db: db,
+	}
+	post := Post{
+		Header: "Тестовый лист",
+		Text:   "Описание тестового листа",
+	}
+	if err := newPost(s.db, post); err != nil {
+		t.Error(err)
+	}
+}
+
+func TestGetPost(t *testing.T) {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Println(err)
@@ -15,31 +34,19 @@ func getDbCon() (s Server) {
 	s := Server{
 		db: db,
 	}
-	return s
-}
-
-func TestNewPost(t *testing.T) {
+	type iD struct {
+		id string
+	}
+	postID := iD{}
+	row := s.db.QueryRow("select id from Site.Blogs WHERE Site.post.header = 'Тестовый лист'")
+	err = row.Scan(&postID.id)
+	log.Println(postID)
 
 	post := Post{
-		ID:     9999999,
 		Header: "Тестовый лист",
 		Text:   "Описание тестового листа",
 	}
-	db := getDbCon()
-	if err := newPost(db, post); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestGetPost(t *testing.T) {
-	id := "9999999"
-	post := Post{
-		ID:     9999999,
-		Header: "Тестовый лист",
-		Text:   "Описание тестового листа",
-	}
-	db := getDbCon()
-	receivedpost, err := getPosts(db, id)
+	receivedpost, err := getPosts(s.db, postID.id)
 	if err != nil {
 		t.Error(err)
 	}
